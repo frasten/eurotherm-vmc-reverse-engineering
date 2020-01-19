@@ -1,0 +1,27 @@
+# Executable and compiled files
+bin/
+obj/
+*.zip
+*.lnk
+
+# Visual Studio user options
+*.suo
+*.user
+.vs/
+
+# Temporary and backup files
+*~
+Thumbs.db
+*.bak
+*.psess
+*.vsp
+*.log
+
+# Ignore NuGet Packages
+*.nupkg
+# Ignore the packages folder
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+#!**/packages/repositories.config
