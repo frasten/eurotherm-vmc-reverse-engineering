@@ -6,7 +6,7 @@ namespace VmcReverse
 {
     public class CsvReader
     {
-        public static IEnumerable<byte> ReadCsvData(string csvFileName)
+        public static List<byte> ReadCsvData(string csvFileName)
         {
             var data = new List<byte>();
             using (var reader = new StreamReader(csvFileName))

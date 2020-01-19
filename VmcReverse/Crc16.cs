@@ -48,7 +48,7 @@ namespace VmcReverse
         ///     Given the message body (excluding the CRC bytes) it produces 2 bytes containing
         ///     the CRC. The byte order is: result[0]: MSB, result[1] = LSB.
         /// </summary>
-        public static IEnumerable<byte> Calculate(IEnumerable<byte> msg)
+        public static ushort Calculate(IEnumerable<byte> msg)
         {
             byte uchCrcHi = 0xFF;
             byte uchCrcLo = 0xFF;
@@ -60,8 +60,8 @@ namespace VmcReverse
                 uchCrcLo = AuchCrcLo[uIndex];
             }
 
-            //var result = (ushort) (uchCrcHi << 8 | uchCrcLo);
-            return new[] {uchCrcHi, uchCrcLo};
+            return (ushort)(uchCrcHi << 8 | uchCrcLo);
+            //return new[] {uchCrcHi, uchCrcLo};
         }
     }
 }
