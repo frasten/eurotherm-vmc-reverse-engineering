@@ -61,6 +61,14 @@ namespace VmcReverse
                         Value = data.GetUShort(ref i);
                     }
                     break;
+                case ModbusFunction.ForceSingleCoil:
+                    Address = data.GetUShort(ref i);
+                    Value = data.GetUShort(ref i); // 0x00 0x00 = OFF, 0xFF 0x00 = ON
+                    break;
+                case ModbusFunction.PresetSingleRegister:
+                    Address = data.GetUShort(ref i);
+                    Value = data.GetUShort(ref i);
+                    break;
                 default:
                     throw new NotImplementedException("Not yet.");
             }
