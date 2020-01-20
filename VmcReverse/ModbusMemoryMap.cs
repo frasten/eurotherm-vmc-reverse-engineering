@@ -7,47 +7,50 @@ namespace VmcReverse
 {
     class ModbusMemoryMap
     {
+        public enum MapStatus
+        {
+            NotChanged,
+            NewRecord,
+            RecordChanged
+        }
+
         public Dictionary<ushort, ushort> HoldingRegisters = new Dictionary<ushort, ushort>();
         public Dictionary<ushort, bool> Coils = new Dictionary<ushort, bool>();
 
-        public void SetHoldingRegister(ushort address, ushort value)
+        public (MapStatus, object) SetHoldingRegister(ushort address, ushort value)
         {
             if (!HoldingRegisters.ContainsKey(address))
             {
-                Console.WriteLine($"New holding register read: 0x{address:X} = {value}");
                 HoldingRegisters.Add(address, value);
+                return (MapStatus.NewRecord, null);
             }
-            else
+
+            var oldValue = HoldingRegisters[address];
+            if (oldValue != value)
             {
-                var oldValue = HoldingRegisters[address];
-                if (oldValue != value)
-                {
-                    Console.WriteLine($"Holding register value changed while reading: 0x{address:X} = {oldValue} => {value}");
-
-                }
-
                 HoldingRegisters[address] = value;
+                return (MapStatus.RecordChanged, oldValue);
             }
+
+            return (MapStatus.NotChanged, null);
         }
 
-        public void SetCoil(ushort address, bool value)
+        public (MapStatus, object) SetCoil(ushort address, bool value)
         {
             if (!Coils.ContainsKey(address))
             {
-                Console.WriteLine($"New coil read: 0x{address:X} = {value}");
                 Coils.Add(address, value);
+                return (MapStatus.NewRecord, null);
             }
-            else
+
+            var oldValue = Coils[address];
+            if (oldValue != value)
             {
-                var oldValue = Coils[address];
-                if (oldValue != value)
-                {
-                    Console.WriteLine($"Coil value changed while reading: 0x{address:X} = {oldValue} => {value}");
-
-                }
-
                 Coils[address] = value;
+                return (MapStatus.RecordChanged, oldValue);
             }
+
+            return (MapStatus.NotChanged, null);
         }
 
         public void Print()

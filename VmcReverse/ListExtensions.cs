@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace VmcReverse
 {
     public static class ListExtensions
     {
-        public static ushort GetUShort(this List<byte> data, ref int i)
+        public static ushort GetUShort(this List<SingleByteData> data, ref int i)
         {
-            return (ushort)(data[i++] << 8 | data[i++]);
+            return (ushort)(data[i++].Value << 8 | data[i++].Value);
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace VmcReverse
 {
     public class Modbus
     {
-        public static List<ModbusMessage> ExtractMessages(List<byte> data)
+        public static List<ModbusMessage> ExtractMessages(List<SingleByteData> data)
         {
             var result = new List<ModbusMessage>();
 
@@ -14,12 +15,13 @@ namespace VmcReverse
             {
                 var msg = new ModbusMessage();
                 var startIndex = i;
+                msg.SecondsFromStart = data[i].SecondsFromStart;
                 msg.Request = request;
-                msg.SlaveNumber = data[i++];
-                msg.Function = (ModbusFunction) data[i++];
+                msg.SlaveNumber = data[i++].Value;
+                msg.Function = (ModbusFunction) data[i++].Value;
                 msg.FillData(data, ref i);
                 var endIndex = i;
-                var payload = data.GetRange(startIndex, endIndex - startIndex);
+                var payload = data.GetRange(startIndex, endIndex - startIndex).Select(d => d.Value);
                 var foundCrc = data.GetUShort(ref i);
                 var computedCrc = Crc16.Calculate(payload);
                 if (computedCrc != foundCrc)

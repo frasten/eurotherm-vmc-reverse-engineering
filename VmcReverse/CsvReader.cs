@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace VmcReverse
 {
     public class CsvReader
     {
-        public static List<byte> ReadCsvData(string csvFileName)
+        public static List<SingleByteData> ReadCsvData(string csvFileName)
         {
-            var data = new List<byte>();
+            var data = new List<SingleByteData>();
             using (var reader = new StreamReader(csvFileName))
             {
                 // Discard header line:
@@ -18,10 +19,19 @@ namespace VmcReverse
                 {
                     var line = reader.ReadLine();
                     var values = line.Split(',');
-                    var field = values[1]; // Second column
-                    var stringData = field.Split('x')[1];
+
+                    var secondsString = values[0]; // First column
+                    var seconds = Convert.ToDouble(secondsString, CultureInfo.InvariantCulture);
+                    var valueString = values[1]; // Second column
+                    var stringData = valueString.Split('x')[1];
                     var converted = StringToByteArray(stringData)[0];
-                    data.Add(converted);
+
+                    var record = new SingleByteData
+                    {
+                        SecondsFromStart = seconds,
+                        Value = converted
+                    };
+                    data.Add(record);
                 }
             }
 

@@ -7,6 +7,8 @@ namespace VmcReverse
     {
         public byte SlaveNumber { get; set; }
 
+        public double SecondsFromStart { get; set; }
+
         /// <summary>
         ///     If true, it's a request from the Master (control panel) to the Slave (VMC).
         ///     If false, it's a response from Slave (VMC) to the Master (control panel).
@@ -20,7 +22,7 @@ namespace VmcReverse
         public ushort Value { get; set; }
 
 
-        public void FillData(List<byte> data, ref int i)
+        public void FillData(List<SingleByteData> data, ref int i)
         {
             switch (Function)
             {
@@ -35,12 +37,12 @@ namespace VmcReverse
                     }
                     else
                     {
-                        var numBytesToRead = data[i++];
+                        var numBytesToRead = data[i++].Value;
                         if (numBytesToRead != 1)
                             throw new NotImplementedException("Not yet.");
                         for (var j = 0; j < numBytesToRead; j++)
                         {
-                            Value = (ushort) data[i++];
+                            Value = (ushort) data[i++].Value;
                         }
                     }
                     break;
@@ -55,7 +57,7 @@ namespace VmcReverse
                     }
                     else
                     {
-                        var numBytesToRead = data[i++];
+                        var numBytesToRead = data[i++].Value;
                         if (numBytesToRead != 2)
                             throw new NotImplementedException("Not yet.");
                         Value = data.GetUShort(ref i);
