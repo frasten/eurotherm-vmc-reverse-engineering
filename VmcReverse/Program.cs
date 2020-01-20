@@ -10,6 +10,12 @@
             var data = CsvReader.ReadCsvData(csvFileName);
 
             var messages = Modbus.ExtractMessages(data);
+
+            var applier = new ModbusCommandApplier();
+            var map = new ModbusMemoryMap();
+            applier.ApplyCommands(map, messages);
+
+            map.Print();
         }
 
         
