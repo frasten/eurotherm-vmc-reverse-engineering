@@ -47,7 +47,7 @@ namespace VmcReverse
 
                 if (mapStatus == ModbusMemoryMap.MapStatus.NotChanged)
                     continue;
-                var time = $"{msg.SecondsFromStart:00.000}";
+                var time = $"{msg.SecondsFromStart:000.000}";
                 var statusLabel = GetStatusString(mapStatus);
                 var writeLabel = IsWriting(msg.Function) ? "WRIT" : "READ";
                 var register = IsCoil(msg.Function) ? "COIL" : "HOLD";
