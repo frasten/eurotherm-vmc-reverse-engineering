@@ -71,6 +71,18 @@ namespace VmcReverse
         private string GetCoilsString()
         {
             var sb = new StringBuilder();
+            sb.AppendLine("*".Repeat(22));
+            var keys = Coils.Keys.ToList();
+            keys.Sort();
+
+            foreach (var addr in keys)
+            {
+                var value = Coils[addr];
+                var valueStr = value ? 1 : 0;
+                sb.Append($"0x{addr:X4}\t{valueStr}\n");
+            }
+
+            sb.AppendLine("*".Repeat(22));
             return sb.ToString();
         }
 
@@ -85,7 +97,7 @@ namespace VmcReverse
             {
                 var value = HoldingRegisters[addr];
                 var paddedValue = $"{value}".PadLeft(6);
-                sb.Append($"0x{addr:X4}  0x{value:X4}  {paddedValue}\n");
+                sb.Append($"0x{addr:X4}\t0x{value:X4}\t{paddedValue}\n");
             }
 
             sb.AppendLine("*".Repeat(22));
